@@ -6,7 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
-
+#define PI 3.14159265
 using namespace std;
 
 struct coordenada{
@@ -29,10 +29,13 @@ void angulos(coordenada a, coordenada b, coordenada c){
     float escalarABCA = (AB.x * CA.x) + (AB.y * CA.y);
     float escalarABBC = (AB.x * BC.x) + (AB.y * BC.y);
     float escalarBCCA = (BC.x * CA.x) + (BC.y * CA.y);
-    
-    float anguloA = acos (fabs(escalarABCA/(moduloAB * moduloCA)));
-    float anguloB = acos (fabs(escalarABBC/(moduloAB * moduloBC)));
-    float anguloC = acos (fabs(escalarBCCA/(moduloBC * moduloCA)));
+ 
+    float anguloARad = acos (fabs(escalarABCA/(moduloAB * moduloCA)));
+    float anguloBRad = acos (fabs(escalarABBC/(moduloAB * moduloBC)));
+    float anguloCRad = acos (fabs(escalarBCCA/(moduloBC * moduloCA)));
+    float anguloA = (anguloARad * 180) / PI;
+    float anguloB = (anguloBRad * 180) / PI;
+    float anguloC = (anguloCRad * 180) / PI;
     
     cout<<"Angulo A: "<<anguloA<<endl;
     cout<<"Angulo B: "<<anguloB<<endl;

@@ -3,10 +3,7 @@
 
 using namespace std;
 
-struct coordenada{
-    float x;
-    float y;
-};
+
 
 int main(int argc, char** argv) {
     coordenada a, b, c;
