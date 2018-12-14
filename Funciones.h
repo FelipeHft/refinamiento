@@ -7,6 +7,7 @@ struct coordenada{
 };
 
 void angulos(coordenada a, coordenada b, coordenada c);
+void lados(coordenada a, coordenada b, coordenada c);
 
 #endif /* FUNCIONES_H */
 

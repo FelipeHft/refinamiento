@@ -41,3 +41,13 @@ void angulos(coordenada a, coordenada b, coordenada c){
     cout<<"Angulo B: "<<anguloB<<endl;
     cout<<"Angulo C: "<<anguloC<<endl;
 }
+
+void lados(coordenada a, coordenada b, coordenada c){
+    float ladoAB = sqrt(pow((b.x - a.x), 2) + pow((b.y - a.y), 2));
+    float ladoBC = sqrt(pow((c.x - b.x), 2) + pow((c.y - b.y), 2));
+    float ladoCA = sqrt(pow((c.x - a.x), 2) + pow((c.y - a.y), 2));
+    
+    cout<<"lado AB: "<<ladoAB<<endl;
+    cout<<"lado BC: "<<ladoBC<<endl;
+    cout<<"lado CA: "<<ladoCA<<endl;
+}

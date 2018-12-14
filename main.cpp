@@ -15,6 +15,7 @@ int main(int argc, char** argv) {
     c.y = -1;
     
     angulos(a, b, c);
+    lados(a, b, c);
     
     return 0;
 }
