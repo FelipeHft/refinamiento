@@ -72,21 +72,22 @@ void leer(){
     string rutaEntrada = "/home/pipeworkout/Escritorio/espiral.mesh";
     string linea;
     
-    ifstream archivo_entrada;
+    ifstream archivo_mesh;
 
-    archivo_entrada.open(rutaEntrada, ios::in); //abriendo archivo modo lectura
-    if(archivo_entrada.fail()){
+    archivo_mesh.open(rutaEntrada, ios::in); //abriendo archivo modo lectura
+    if(archivo_mesh.fail()){
         //si no se puede abrir el archivo o crear se termina el programa
         cout<<"Error con los archivos!"<<endl;
     }
     else{            
-        while(!archivo_entrada.eof()){ //recorre archivo txt
-            getline(archivo_entrada, linea); //guardando linea del txt en linea 
+        while(!archivo_mesh.eof()){ //recorre archivo txt
+            fflush(stdin); 
+            getline(archivo_mesh, linea); //guardando linea del txt en linea 
             string nodo1, nodo2, nodo3;
             separar(linea, nodo1, nodo2, nodo3);
             cout << nodo1 << ", "<< nodo2 << ", "<< nodo3 << endl;
         }
     }
-    archivo_entrada.close();
+    archivo_mesh.close();
 }
 
