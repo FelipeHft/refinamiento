@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
+#include <vector>
 #define PI 3.14159265
 using namespace std;
 
@@ -51,3 +52,43 @@ void lados(coordenada a, coordenada b, coordenada c){
     cout<<"lado BC: "<<ladoBC<<endl;
     cout<<"lado CA: "<<ladoCA<<endl;
 }
+
+void separar(string linea, string *n1, string *n2, string *n3){
+    vector<string> nodos;
+    size_t found,found2;
+
+    //string cadena ="2132312314535647484 123312 2233124";
+    found = linea.find(" ");
+    found2 = linea.find(" " , found+1);
+    nodos.push_back(linea.substr(0,found));
+    nodos.push_back(linea.substr(found+1,found2-found));
+    nodos.push_back(linea.substr(found2+1,linea.size()));
+    n1 = nodos[0];
+    n2 = nodos[1];
+    n3 = nodos[2];
+}
+
+void leer(){
+    string rutaEntrada = "/home/pipeworkout/Escritorio/espiral.mesh";
+    string linea;
+    
+    ifstream archivo_entrada;
+
+    archivo_entrada.open(rutaEntrada, ios::in); //abriendo archivo modo lectura
+    if(archivo_entrada.fail()){
+        //si no se puede abrir el archivo o crear se termina el programa
+        cout<<"Error con los archivos!"<<endl;
+    }
+    else{            
+        while(!archivo_entrada.eof()){ //recorre archivo txt
+            getline(archivo_entrada, linea); //guardando linea del txt en linea 
+            string nodo1, nodo2, nodo3;
+            separar(linea, &nodo1, &nodo2, &nodo3);
+            cout << nodo1 << endl;
+            cout << nodo2 << endl;
+            cout << nodo3 << endl;
+        }
+    }
+    archivo_entrada.close();
+}
+
