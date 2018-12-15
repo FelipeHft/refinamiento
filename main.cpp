@@ -14,8 +14,9 @@ int main(int argc, char** argv) {
     c.x = 4;
     c.y = -1;
     
-    angulos(a, b, c);
-    lados(a, b, c);
+    //angulos(a, b, c);
+    //lados(a, b, c);
+    leer();
     
     return 0;
 }

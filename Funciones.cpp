@@ -53,7 +53,7 @@ void lados(coordenada a, coordenada b, coordenada c){
     cout<<"lado CA: "<<ladoCA<<endl;
 }
 
-void separar(string linea, string *n1, string *n2, string *n3){
+void separar(string linea, string &n1, string &n2, string &n3){
     vector<string> nodos;
     size_t found,found2;
 
@@ -83,10 +83,8 @@ void leer(){
         while(!archivo_entrada.eof()){ //recorre archivo txt
             getline(archivo_entrada, linea); //guardando linea del txt en linea 
             string nodo1, nodo2, nodo3;
-            separar(linea, &nodo1, &nodo2, &nodo3);
-            cout << nodo1 << endl;
-            cout << nodo2 << endl;
-            cout << nodo3 << endl;
+            separar(linea, nodo1, nodo2, nodo3);
+            cout << nodo1 << ", "<< nodo2 << ", "<< nodo3 << endl;
         }
     }
     archivo_entrada.close();
