@@ -16,7 +16,7 @@ struct coordenada{
 };
 
 
-void angulos(coordenada a, coordenada b, coordenada c){
+void angulos(coordenada a, coordenada b, coordenada c, float &anguloA, float &anguloB, float &anguloC){
     coordenada AB, BC, CA;
     AB.x = b.x - a.x;
     AB.y = b.y - a.y;
@@ -34,13 +34,10 @@ void angulos(coordenada a, coordenada b, coordenada c){
     float anguloARad = acos (fabs(escalarABCA/(moduloAB * moduloCA)));
     float anguloBRad = acos (fabs(escalarABBC/(moduloAB * moduloBC)));
     float anguloCRad = acos (fabs(escalarBCCA/(moduloBC * moduloCA)));
-    float anguloA = (anguloARad * 180) / PI;
-    float anguloB = (anguloBRad * 180) / PI;
-    float anguloC = (anguloCRad * 180) / PI;
+    anguloA = (anguloARad * 180) / PI;
+    anguloB = (anguloBRad * 180) / PI;
+    anguloC = (anguloCRad * 180) / PI;
     
-    cout<<"Angulo A: "<<anguloA<<endl;
-    cout<<"Angulo B: "<<anguloB<<endl;
-    cout<<"Angulo C: "<<anguloC<<endl;
 }
 
 void lados(coordenada a, coordenada b, coordenada c){
@@ -61,7 +58,7 @@ void separar(string linea, string &n1, string &n2, string &n3){
     found = linea.find(" ");
     found2 = linea.find(" " , found+1);
     nodos.push_back(linea.substr(0,found));
-    nodos.push_back(linea.substr(found+1,found2-found));
+    nodos.push_back(linea.substr(found+1,found2-found-1));
     nodos.push_back(linea.substr(found2+1,linea.size()));
     n1 = nodos[0];
     n2 = nodos[1];
@@ -69,25 +66,68 @@ void separar(string linea, string &n1, string &n2, string &n3){
 }
 
 void leer(){
-    string rutaEntrada = "/home/pipeworkout/Escritorio/espiral.mesh";
-    string linea;
+    string rutaEntradaMesh = "/home/pipeworkout/Escritorio/espiral.mesh";
+    string rutaEntradaNode = "/home/pipeworkout/Escritorio/espiral.node";
+    string lineaMesh;
+    string lineaNode;
+    coordenada coordNodo1, coordNodo2, coordNodo3;
     
     ifstream archivo_mesh;
-
-    archivo_mesh.open(rutaEntrada, ios::in); //abriendo archivo modo lectura
-    if(archivo_mesh.fail()){
+    ifstream archivo_node;
+    
+    float anguloPrueba = 40.35;
+    
+    archivo_mesh.open(rutaEntradaMesh, ios::in); //abriendo archivo modo lectura
+    archivo_node.open(rutaEntradaNode, ios::in);
+    
+    if(archivo_mesh.fail() || archivo_node.fail()){
         //si no se puede abrir el archivo o crear se termina el programa
         cout<<"Error con los archivos!"<<endl;
     }
-    else{            
-        while(!archivo_mesh.eof()){ //recorre archivo txt
-            fflush(stdin); 
-            getline(archivo_mesh, linea); //guardando linea del txt en linea 
+    else{
+        getline(archivo_mesh, lineaMesh);
+        while(getline(archivo_mesh, lineaMesh)){ //recorre archivo txt  
+            int i=0;
+            float anguloA, anguloB, anguloC;
             string nodo1, nodo2, nodo3;
-            separar(linea, nodo1, nodo2, nodo3);
-            cout << nodo1 << ", "<< nodo2 << ", "<< nodo3 << endl;
+            separar(lineaMesh, nodo1, nodo2, nodo3);
+            while(getline(archivo_node, lineaNode)){
+                string nodo, valorX, valorY;
+                separar(lineaNode, nodo, valorX, valorY);
+                //cout<<nodo<<" = "<<stof(valorX)<<", "<<stof(valorY)<<endl;
+                if(nodo1 == nodo){
+                    coordNodo1.x = stof(valorX);
+                    coordNodo1.y = stof(valorY);
+                }
+                if(nodo2 == nodo){
+                    coordNodo2.x = stof(valorX);
+                    coordNodo2.y = stof(valorY);
+                }
+                if(nodo3 == nodo){
+                    coordNodo3.x = stof(valorX);
+                    coordNodo3.y = stof(valorY);
+                }
+                /*
+                cout<<nodo1<<" = "<<coordNodo1.x<<", "<<coordNodo1.y<<endl;
+                cout<<nodo2<<" = "<<coordNodo2.x<<", "<<coordNodo2.y<<endl;
+                cout<<nodo3<<" = "<<coordNodo3.x<<", "<<coordNodo3.y<<endl;
+                 */
+            }
+            angulos(coordNodo1, coordNodo2, coordNodo3, anguloA, anguloB, anguloC);
+            //cout<<anguloA<<", "<<anguloB<<", "<<anguloC<<endl;
+            /*if(anguloA <= anguloPrueba || anguloB <= anguloPrueba || anguloC <= anguloPrueba){
+                cout<<"ye";
+            }
+            else{
+                cout<<"no";
+            }*/
+            
+            //cout << nodo1 << ", "<< nodo2 << ", "<< nodo3 << endl;
+            cout<<i<<endl;
+            i++;
         }
     }
     archivo_mesh.close();
+    archivo_node.close();
 }
 
