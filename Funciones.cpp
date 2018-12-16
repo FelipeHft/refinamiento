@@ -67,16 +67,21 @@ void leer(){
     string lineaMesh;
     string lineaNode;
     coordenada coordNodo1, coordNodo2, coordNodo3;
+    int nombre = 5001;
     
     ifstream archivo_mesh;
     ifstream archivo_node;
+
+    ofstream archivo_salida_mesh;
+    ofstream archivo_salida_node;
     
     float anguloPrueba = 40.35;
     
     archivo_mesh.open(rutaEntradaMesh, ios::in); //abriendo archivo modo lectura
     archivo_node.open(rutaEntradaNode, ios::in);
+    archivo_salida_node.open("/home/pipeworkout/Escritorio/espiralFinal.node", ios::out);
     
-    if(archivo_mesh.fail() || archivo_node.fail()){
+    if(archivo_mesh.fail() || archivo_node.fail() || archivo_salida_node.fail()){
         //si no se puede abrir el archivo o crear se termina el programa
         cout<<"Error con los archivos!"<<endl;
     }
@@ -108,6 +113,7 @@ void leer(){
             angulos(coordNodo1, coordNodo2, coordNodo3, anguloA, anguloB, anguloC);
             if(anguloA <= anguloPrueba || anguloB <= anguloPrueba || anguloC <= anguloPrueba){
                 coordenada nuevoNodo;
+                string lineaSalidaNode;
                 lados(coordNodo1, coordNodo2, coordNodo3, ladoAB, ladoBC, ladoCA);
                 if(ladoAB >= ladoBC && ladoAB >= ladoCA){
                     nuevoNodo.x = (coordNodo1.x + coordNodo2.x) / 2;
@@ -120,13 +126,17 @@ void leer(){
                 if(ladoCA >= ladoBC && ladoCA >= ladoAB){
                     nuevoNodo.x = (coordNodo3.x + coordNodo1.x) / 2;
                     nuevoNodo.y = (coordNodo3.y + coordNodo1.y) / 2;
-                }       
+                }
+                lineaSalidaNode = to_string(nombre) +" "+ to_string(nuevoNodo.x) +" "+ to_string(nuevoNodo.y);
+                archivo_salida_node << lineaSalidaNode << "\n";
+                nombre++;
             }
-            
-            //cout << nodo1 << ", "<< nodo2 << ", "<< nodo3 << endl;
         }
     }
     archivo_mesh.close();
     archivo_node.close();
+    archivo_salida_node.close();
 }
+
+
 
