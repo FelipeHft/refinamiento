@@ -40,14 +40,10 @@ void angulos(coordenada a, coordenada b, coordenada c, float &anguloA, float &an
     
 }
 
-void lados(coordenada a, coordenada b, coordenada c){
-    float ladoAB = sqrt(pow((b.x - a.x), 2) + pow((b.y - a.y), 2));
-    float ladoBC = sqrt(pow((c.x - b.x), 2) + pow((c.y - b.y), 2));
-    float ladoCA = sqrt(pow((c.x - a.x), 2) + pow((c.y - a.y), 2));
-    
-    cout<<"lado AB: "<<ladoAB<<endl;
-    cout<<"lado BC: "<<ladoBC<<endl;
-    cout<<"lado CA: "<<ladoCA<<endl;
+void lados(coordenada a, coordenada b, coordenada c, float &ladoAB, float &ladoBC, float &ladoCA){
+    ladoAB = sqrt(pow((b.x - a.x), 2) + pow((b.y - a.y), 2));
+    ladoBC = sqrt(pow((c.x - b.x), 2) + pow((c.y - b.y), 2));
+    ladoCA = sqrt(pow((c.x - a.x), 2) + pow((c.y - a.y), 2));
 }
 
 void separar(string linea, string &n1, string &n2, string &n3){
@@ -87,14 +83,13 @@ void leer(){
     else{
         getline(archivo_mesh, lineaMesh);
         while(getline(archivo_mesh, lineaMesh)){ //recorre archivo txt  
-            int i=0;
             float anguloA, anguloB, anguloC;
+            float ladoAB, ladoBC, ladoCA;
             string nodo1, nodo2, nodo3;
             separar(lineaMesh, nodo1, nodo2, nodo3);
             while(getline(archivo_node, lineaNode)){
                 string nodo, valorX, valorY;
                 separar(lineaNode, nodo, valorX, valorY);
-                //cout<<nodo<<" = "<<stof(valorX)<<", "<<stof(valorY)<<endl;
                 if(nodo1 == nodo){
                     coordNodo1.x = stof(valorX);
                     coordNodo1.y = stof(valorY);
@@ -107,24 +102,28 @@ void leer(){
                     coordNodo3.x = stof(valorX);
                     coordNodo3.y = stof(valorY);
                 }
-                /*
-                cout<<nodo1<<" = "<<coordNodo1.x<<", "<<coordNodo1.y<<endl;
-                cout<<nodo2<<" = "<<coordNodo2.x<<", "<<coordNodo2.y<<endl;
-                cout<<nodo3<<" = "<<coordNodo3.x<<", "<<coordNodo3.y<<endl;
-                 */
             }
+            archivo_node.clear();
+            archivo_node.seekg(0, ios::beg);
             angulos(coordNodo1, coordNodo2, coordNodo3, anguloA, anguloB, anguloC);
-            //cout<<anguloA<<", "<<anguloB<<", "<<anguloC<<endl;
-            /*if(anguloA <= anguloPrueba || anguloB <= anguloPrueba || anguloC <= anguloPrueba){
-                cout<<"ye";
+            if(anguloA <= anguloPrueba || anguloB <= anguloPrueba || anguloC <= anguloPrueba){
+                coordenada nuevoNodo;
+                lados(coordNodo1, coordNodo2, coordNodo3, ladoAB, ladoBC, ladoCA);
+                if(ladoAB >= ladoBC && ladoAB >= ladoCA){
+                    nuevoNodo.x = (coordNodo1.x + coordNodo2.x) / 2;
+                    nuevoNodo.y = (coordNodo1.y + coordNodo2.y) / 2;
+                }
+                if(ladoBC >= ladoAB && ladoBC >= ladoCA){
+                    nuevoNodo.x = (coordNodo2.x + coordNodo3.x) / 2;
+                    nuevoNodo.y = (coordNodo2.y + coordNodo3.y) / 2;
+                }
+                if(ladoCA >= ladoBC && ladoCA >= ladoAB){
+                    nuevoNodo.x = (coordNodo3.x + coordNodo1.x) / 2;
+                    nuevoNodo.y = (coordNodo3.y + coordNodo1.y) / 2;
+                }       
             }
-            else{
-                cout<<"no";
-            }*/
             
             //cout << nodo1 << ", "<< nodo2 << ", "<< nodo3 << endl;
-            cout<<i<<endl;
-            i++;
         }
     }
     archivo_mesh.close();
