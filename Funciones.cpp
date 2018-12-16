@@ -79,7 +79,7 @@ void leer(){
     
     archivo_mesh.open(rutaEntradaMesh, ios::in); //abriendo archivo modo lectura
     archivo_node.open(rutaEntradaNode, ios::in);
-    archivo_salida_node.open("/home/pipeworkout/Escritorio/espiralFinal.node", ios::out);
+    archivo_salida_node.open("/home/pipeworkout/Escritorio/espiralAux.node", ios::out);
     
     if(archivo_mesh.fail() || archivo_node.fail() || archivo_salida_node.fail()){
         //si no se puede abrir el archivo o crear se termina el programa
@@ -138,5 +138,38 @@ void leer(){
     archivo_salida_node.close();
 }
 
+void conforme(string linea){
+    string nodo1, nodo2, nodo3;
+    separar(linea, nodo1, nodo2, nodo3);   
+}
 
-
+void archivoFinalNode(){
+    string rutaEntradaNode = "/home/pipeworkout/Escritorio/espiral.node";
+    string rutaEntradaNodeAux = "/home/pipeworkout/Escritorio/espiralAux.node";
+    string rutaSalida = "/home/pipeworkout/Escritorio/espiralFinal.node";
+    string lineaNode;
+    string lineaNodeAux;
+    ifstream archivo_node;
+    ifstream archivo_node_aux;
+    ofstream archivo_salida_node;
+    archivo_node.open(rutaEntradaNode, ios::in);
+    archivo_node_aux.open(rutaEntradaNodeAux, ios::in);
+    archivo_salida_node.open(rutaSalida, ios::out);
+    
+    if(archivo_node.fail() || archivo_node_aux.fail() || archivo_salida_node.fail()){
+        //si no se puede abrir el archivo o crear se termina el programa
+        cout<<"Error con los archivos!"<<endl;
+    }
+    else{
+        while(getline(archivo_node, lineaNode)){
+            archivo_salida_node << lineaNode << "\n";
+        }
+        while(getline(archivo_node_aux, lineaNodeAux)){
+            archivo_salida_node << lineaNodeAux << "\n";
+        }
+    }
+    
+    archivo_node.close();
+    archivo_node_aux.close();
+    archivo_salida_node.close();
+}

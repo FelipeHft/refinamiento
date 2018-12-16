@@ -15,6 +15,7 @@ void angulos(coordenada, coordenada, coordenada);
 void lados(coordenada, coordenada, coordenada);
 void separa(string, string &, string &, string &);
 void leer();
+void archivoFinalNode();
 
 #endif /* FUNCIONES_H */
 
