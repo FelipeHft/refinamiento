@@ -68,6 +68,7 @@ void leer(){
     string lineaNode;
     coordenada coordNodo1, coordNodo2, coordNodo3;
     int nombre = 5001;
+    int existe = 0;
     
     ifstream archivo_mesh;
     ifstream archivo_node;
@@ -126,9 +127,23 @@ void leer(){
                     nuevoNodo.x = (coordNodo3.x + coordNodo1.x) / 2;
                     nuevoNodo.y = (coordNodo3.y + coordNodo1.y) / 2;
                 }
-                lineaSalidaNode = to_string(nombre) +" "+ to_string(nuevoNodo.x) +" "+ to_string(nuevoNodo.y);
-                archivo_salida_node << lineaSalidaNode << "\n";
-                nombre++;
+                while(getline(archivo_node, lineaNode)){//revisar si el nodo existe
+                    string nodo, valorX, valorY;
+                    separar(lineaNode, nodo, valorX, valorY);
+                    if(valorX == to_string(nuevoNodo.x) && valorY == to_string(nuevoNodo.y)){
+                        existe = 1;
+                    }
+                }
+                archivo_node.clear();
+                archivo_node.seekg(0, ios::beg);
+                if(existe == 0){
+                    lineaSalidaNode = to_string(nombre) +" "+ to_string(nuevoNodo.x) +" "+ to_string(nuevoNodo.y);
+                    archivo_salida_node << lineaSalidaNode << "\n";
+                    nombre++;
+                }
+                else{
+                    existe = 0;
+                }
             }
         }
     }
