@@ -72,7 +72,6 @@ void leer(){
     ifstream archivo_mesh;
     ifstream archivo_node;
 
-    ofstream archivo_salida_mesh;
     ofstream archivo_salida_node;
     
     float anguloPrueba = 40.35;
@@ -172,4 +171,80 @@ void archivoFinalNode(){
     archivo_node.close();
     archivo_node_aux.close();
     archivo_salida_node.close();
+}
+
+void conforme(){
+    string rutaEntradaMesh = "/home/pipeworkout/Escritorio/espiral.mesh";
+    string rutaEntradaNodeFinal = "/home/pipeworkout/Escritorio/espiralFinal.node";
+    string rutaSalida = "/home/pipeworkout/Escritorio/espiralFinal.mesh";
+    string lineaMesh;
+    string lineaNode;
+    coordenada coordNodo1, coordNodo2, coordNodo3;
+    coordenada puntoMedioN1N2, puntoMedioN2N3, puntoMedioN3N1;
+    ifstream archivo_mesh;
+    ifstream archivo_node;
+    ofstream archivo_salida_mesh;
+    archivo_mesh.open(rutaEntradaMesh, ios::in);
+    archivo_node.open(rutaEntradaNodeFinal, ios::in);
+    archivo_salida_mesh.open(rutaSalida, ios::out);
+    
+    if(archivo_mesh.fail() || archivo_node.fail() || archivo_salida_mesh.fail()){
+        //si no se puede abrir el archivo o crear se termina el programa
+        cout<<"Error con los archivos!"<<endl;
+    }
+    else{
+        getline(archivo_mesh, lineaMesh);
+        while(getline(archivo_mesh, lineaMesh)){
+            string nodo1, nodo2, nodo3;
+            separar(lineaMesh, nodo1, nodo2, nodo3);
+            while(getline(archivo_node, lineaNode)){
+                string nodo, valorX, valorY;
+                separar(lineaNode, nodo, valorX, valorY);
+                if(nodo1 == nodo){
+                    coordNodo1.x = stof(valorX);
+                    coordNodo1.y = stof(valorY);
+                }
+                if(nodo2 == nodo){
+                    coordNodo2.x = stof(valorX);
+                    coordNodo2.y = stof(valorY);
+                }
+                if(nodo3 == nodo){
+                    coordNodo3.x = stof(valorX);
+                    coordNodo3.y = stof(valorY);
+                }
+            }
+            archivo_node.clear();
+            archivo_node.seekg(0, ios::beg);
+            puntoMedioN1N2.x = (coordNodo1.x + coordNodo2.x) / 2;
+            puntoMedioN1N2.y = (coordNodo1.y + coordNodo2.y) / 2;
+            puntoMedioN2N3.x = (coordNodo2.x + coordNodo3.x) / 2;
+            puntoMedioN2N3.y = (coordNodo2.y + coordNodo3.y) / 2;
+            puntoMedioN3N1.x = (coordNodo3.x + coordNodo1.x) / 2;
+            puntoMedioN3N1.y = (coordNodo3.y + coordNodo1.y) / 2;
+            while(getline(archivo_node, lineaNode)){
+                string nodo, valorX, valorY;
+                separar(lineaNode, nodo, valorX, valorY);
+                if(to_string(puntoMedioN1N2.x) == valorX && to_string(puntoMedioN1N2.y) == valorY){
+                    archivo_salida_mesh << nodo1 << " " << nodo << " " << nodo3 << "\n";
+                    archivo_salida_mesh << nodo2 << " " << nodo << " " << nodo3 << "\n";
+                }
+                else if(to_string(puntoMedioN2N3.x) == valorX && to_string(puntoMedioN2N3.y) == valorY){
+                    archivo_salida_mesh << nodo2 << " " << nodo << " " << nodo1 << "\n";
+                    archivo_salida_mesh << nodo3 << " " << nodo << " " << nodo1 << "\n";
+                }
+                else if(to_string(puntoMedioN3N1.x) == valorX && to_string(puntoMedioN3N1.y) == valorY){
+                    archivo_salida_mesh << nodo3 << " " << nodo << " " << nodo2 << "\n";
+                    archivo_salida_mesh << nodo1 << " " << nodo << " " << nodo2 << "\n";
+                }
+                else{
+                    archivo_salida_mesh << nodo1 << " " << nodo2 << " " << nodo3 << "\n";
+                }
+            }
+            archivo_node.clear();
+            archivo_node.seekg(0, ios::beg);
+        }
+    }
+    archivo_mesh.close();
+    archivo_node.close();
+    archivo_salida_mesh.close();   
 }
