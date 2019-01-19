@@ -62,8 +62,8 @@ void separar(string linea, string &n1, string &n2, string &n3){
 }
 
 void leer(){
-    string rutaEntradaMesh = "/home/pipeworkout/Escritorio/espiral.mesh";
-    string rutaEntradaNode = "/home/pipeworkout/Escritorio/espiral.node";
+    string rutaEntradaMesh = "espiral.mesh";
+    string rutaEntradaNode = "espiral.node";
     string lineaMesh;
     string lineaNode;
     coordenada coordNodo1, coordNodo2, coordNodo3;
@@ -79,7 +79,7 @@ void leer(){
     
     archivo_mesh.open(rutaEntradaMesh, ios::in); //abriendo archivo modo lectura
     archivo_node.open(rutaEntradaNode, ios::in);
-    archivo_salida_node.open("/home/pipeworkout/Escritorio/espiralAux.node", ios::out);
+    archivo_salida_node.open("espiralAux.node", ios::out);
     
     if(archivo_mesh.fail() || archivo_node.fail() || archivo_salida_node.fail()){
         //si no se puede abrir el archivo o crear se termina el programa
@@ -158,9 +158,9 @@ void conforme(string linea){
 }
 
 void archivoFinalNode(){
-    string rutaEntradaNode = "/home/pipeworkout/Escritorio/espiral.node";
-    string rutaEntradaNodeAux = "/home/pipeworkout/Escritorio/espiralAux.node";
-    string rutaSalida = "/home/pipeworkout/Escritorio/espiralFinal.node";
+    string rutaEntradaNode = "espiral.node";
+    string rutaEntradaNodeAux = "espiralAux.node";
+    string rutaSalida = "espiralFinal.node";
     string lineaNode;
     string lineaNodeAux;
     ifstream archivo_node;
@@ -189,9 +189,9 @@ void archivoFinalNode(){
 }
 
 void conforme(){
-    string rutaEntradaMesh = "/home/pipeworkout/Escritorio/espiral.mesh";
-    string rutaEntradaNodeFinal = "/home/pipeworkout/Escritorio/espiralFinal.node";
-    string rutaSalida = "/home/pipeworkout/Escritorio/espiralFinal.mesh";
+    string rutaEntradaMesh = "espiral.mesh";
+    string rutaEntradaNodeFinal = "espiralFinal.node";
+    string rutaSalida = "espiralFinal.mesh";
     string lineaMesh;
     string lineaNode;
     coordenada coordNodo1, coordNodo2, coordNodo3;
@@ -202,6 +202,10 @@ void conforme(){
     archivo_mesh.open(rutaEntradaMesh, ios::in);
     archivo_node.open(rutaEntradaNodeFinal, ios::in);
     archivo_salida_mesh.open(rutaSalida, ios::out);
+    int c=0;
+    int c1=0;
+    int c2=0;
+    int c3=0;
     
     if(archivo_mesh.fail() || archivo_node.fail() || archivo_salida_mesh.fail()){
         //si no se puede abrir el archivo o crear se termina el programa
@@ -237,24 +241,30 @@ void conforme(){
             puntoMedioN3N1.x = (coordNodo3.x + coordNodo1.x) / 2;
             puntoMedioN3N1.y = (coordNodo3.y + coordNodo1.y) / 2;
             while(getline(archivo_node, lineaNode)){
-                string nodo, valorX, valorY;
-                separar(lineaNode, nodo, valorX, valorY);
-                if(to_string(puntoMedioN1N2.x) == valorX && to_string(puntoMedioN1N2.y) == valorY){
+                string nodo, valor1, valor2;
+                separar(lineaNode, nodo, valor1, valor2);
+                if(to_string(puntoMedioN1N2.x) == valor1 && to_string(puntoMedioN1N2.y) == valor2 && c==0){
                     archivo_salida_mesh << nodo1 << " " << nodo << " " << nodo3 << "\n";
                     archivo_salida_mesh << nodo2 << " " << nodo << " " << nodo3 << "\n";
+                    c++;
                 }
-                else if(to_string(puntoMedioN2N3.x) == valorX && to_string(puntoMedioN2N3.y) == valorY){
+                else if(to_string(puntoMedioN2N3.x) == valor1 && to_string(puntoMedioN2N3.y) == valor2 && c1==0){
                     archivo_salida_mesh << nodo2 << " " << nodo << " " << nodo1 << "\n";
                     archivo_salida_mesh << nodo3 << " " << nodo << " " << nodo1 << "\n";
+                    c1++;
                 }
-                else if(to_string(puntoMedioN3N1.x) == valorX && to_string(puntoMedioN3N1.y) == valorY){
+                else if(to_string(puntoMedioN3N1.x) == valor1 && to_string(puntoMedioN3N1.y) == valor2 && c2==0){
                     archivo_salida_mesh << nodo3 << " " << nodo << " " << nodo2 << "\n";
                     archivo_salida_mesh << nodo1 << " " << nodo << " " << nodo2 << "\n";
+                    c2++;
                 }
                 else{
+                    if (c3==0)
                     archivo_salida_mesh << nodo1 << " " << nodo2 << " " << nodo3 << "\n";
+                    c3++;
                 }
             }
+            c,c1,c2,c3=0;
             archivo_node.clear();
             archivo_node.seekg(0, ios::beg);
         }
